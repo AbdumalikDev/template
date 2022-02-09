@@ -17,7 +17,7 @@ export class SampleController {
     })
 
     get = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-        const sample = await storage.sample.findById(req.params.id)
+        const sample = await storage.sample.findOne(req.query)
 
         res.status(200).json({
             success: true,
