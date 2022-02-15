@@ -3,6 +3,9 @@ import { logger } from '../config/logger'
 import { storage } from '../storage/main'
 import AppError from '../utils/appError'
 import catchAsync from '../utils/catchAsync'
+import { v4 as uuidv4 } from 'uuid'
+import path from 'path'
+import sharp from 'sharp'
 
 export class SampleController {
     getAll = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -29,6 +32,14 @@ export class SampleController {
 
     create = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const sample = await storage.sample.create(req.body)
+
+        if (req.file) {
+            const icon = `icons/${req.file.fieldname}-${uuidv4()}`
+
+            await sharp(req.file.buffer)
+                .png()
+                .toFile(path.join(__dirname, '../../../uploads', `${icon}.png`))
+        }
 
         res.status(201).json({
             success: true,

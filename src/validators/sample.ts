@@ -14,8 +14,8 @@ export class SampleValidator {
     })
 
     updateSchema = Joi.object({
-        name: Joi.string().required(),
-        description: Joi.string().required()
+        name: Joi.string(),
+        description: Joi.string()
     })
 
     create = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
